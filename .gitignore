@@ -5,7 +5,8 @@
 *.slo
 *.lo
 *.o
-*.obj
+# Take in the 3D models :
+# *.obj
 
 # Precompiled Headers
 *.gch
