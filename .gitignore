@@ -5,8 +5,9 @@
 *.slo
 *.lo
 *.o
-# Take in the 3D models :
-# *.obj
+# Take in the 3D models in model folders :
+*.obj
+![Mm]odels/*.obj
 
 # Precompiled Headers
 *.gch
