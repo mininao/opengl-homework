@@ -131,6 +131,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainControls.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="WavefrontParser.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +140,7 @@
     <ClInclude Include="MainControls.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="WavefrontParser.h" />
   </ItemGroup>
   <ItemGroup>
