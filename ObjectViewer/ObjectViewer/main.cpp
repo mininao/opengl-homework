@@ -3,6 +3,7 @@
 #include "GL/freeglut.h"
 #include "WavefrontParser.h"
 #include "Actor.h"
+#include "MainControls.h"
 
 Actor mainActor;
 
@@ -27,9 +28,8 @@ void idle()
 
 void mouse(int btn, int state, int x, int y)
 {
-	if (btn == GLUT_LEFT_BUTTON && state == GLUT_DOWN) axis = 0;
-	if (btn == GLUT_MIDDLE_BUTTON && state == GLUT_DOWN) axis = 1;
-	if (btn == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) axis = 2;
+	if (btn == GLUT_LEFT_BUTTON && state == GLUT_DOWN) ;
+	if (btn == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) ;
 }
 
 void keyboard(unsigned char key, int x, int y)
@@ -52,6 +52,9 @@ void handleReshape(int w, int h)
 
 int main(int argc, char **argv)
 {
+	MainControls^ mainControls = gcnew MainControls;
+	mainControls->Show();
+
 	mainActor = WavefrontParser::wavefrontToActor("models/simple.obj");
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

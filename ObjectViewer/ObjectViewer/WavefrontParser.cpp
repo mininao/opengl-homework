@@ -13,12 +13,12 @@ namespace WavefrontParser
 	Actor wavefrontToActor(string path)
 	{
 		/**
-		 * Code inspired from :
-		 * https://github.com/joyeecheung/obj-loader/blob/master/src/glm.cpp
-		 * http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
-		 * http://netization.blogspot.in/2014/10/loading-obj-files-in-opengl.html
-		 */
-		
+		* Code inspired from :
+		* https://github.com/joyeecheung/obj-loader/blob/master/src/glm.cpp
+		* http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
+		* http://netization.blogspot.in/2014/10/loading-obj-files-in-opengl.html
+		*/
+
 		ifstream file(path);
 
 		//TODO: Check file exists
@@ -30,12 +30,12 @@ namespace WavefrontParser
 		while (getline(file, line))
 		{
 			string lineStart = line.substr(0, 2);
-			
-			if(lineStart == "v ")
+
+			if (lineStart == "v ")
 			{
 				actor.pushVertex(parseVertexLine(line));
 			}
-			else if(lineStart == "f ")
+			else if (lineStart == "f ")
 			{
 				actor.pushFace(parseFaceLine(line));
 			}
