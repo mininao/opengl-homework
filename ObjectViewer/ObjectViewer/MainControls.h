@@ -4,6 +4,7 @@
 #include "Actor.h"
 #include <GL/freeglut.h>
 #include <functional>
+
 using namespace System;
 using namespace System::ComponentModel;
 using namespace System::Collections;
@@ -33,6 +34,10 @@ private: System::Windows::Forms::Label^  nearClipLabel;
 private: System::Windows::Forms::Label^  farClipLabel;
 private: System::Windows::Forms::NumericUpDown^  farClipNumericUpDown;
 private: System::Windows::Forms::NumericUpDown^  nearClipNumericUpDown;
+private: System::Windows::Forms::ColorDialog^  actorColorDialog;
+private: System::Windows::Forms::Button^  colorButton;
+private: System::Windows::Forms::Panel^  colorButtonChip;
+
 
 
 private:
@@ -91,6 +96,9 @@ private:
 		this->nearClipNumericUpDown = (gcnew System::Windows::Forms::NumericUpDown());
 		this->farClipLabel = (gcnew System::Windows::Forms::Label());
 		this->nearClipLabel = (gcnew System::Windows::Forms::Label());
+		this->actorColorDialog = (gcnew System::Windows::Forms::ColorDialog());
+		this->colorButton = (gcnew System::Windows::Forms::Button());
+		this->colorButtonChip = (gcnew System::Windows::Forms::Panel());
 		this->topbar->SuspendLayout();
 		this->windingOrderGroupBox->SuspendLayout();
 		this->cameraGroupBox->SuspendLayout();
@@ -223,6 +231,26 @@ private:
 		this->nearClipLabel->TabIndex = 7;
 		this->nearClipLabel->Text = L"Near Clipping distance";
 		// 
+		// colorButton
+		// 
+		this->colorButton->Location = System::Drawing::Point(34, 336);
+		this->colorButton->Name = L"colorButton";
+		this->colorButton->Padding = System::Windows::Forms::Padding(0, 0, 25, 0);
+		this->colorButton->Size = System::Drawing::Size(155, 37);
+		this->colorButton->TabIndex = 7;
+		this->colorButton->Text = L"Change model color";
+		this->colorButton->UseVisualStyleBackColor = true;
+		this->colorButton->Click += gcnew System::EventHandler(this, &MainControls::colorButton_Click);
+		// 
+		// colorButtonChip
+		// 
+		this->colorButtonChip->BackColor = System::Drawing::Color::Red;
+		this->colorButtonChip->Location = System::Drawing::Point(156, 345);
+		this->colorButtonChip->Name = L"colorButtonChip";
+		this->colorButtonChip->Size = System::Drawing::Size(21, 19);
+		this->colorButtonChip->TabIndex = 8;
+		this->colorButtonChip->Click += gcnew System::EventHandler(this, &MainControls::colorButton_Click);
+		// 
 		// MainControls
 		// 
 		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -231,6 +259,8 @@ private:
 			static_cast<System::Int32>(static_cast<System::Byte>(245)));
 		this->ClientSize = System::Drawing::Size(453, 455);
 		this->ControlBox = false;
+		this->Controls->Add(this->colorButtonChip);
+		this->Controls->Add(this->colorButton);
 		this->Controls->Add(this->cameraGroupBox);
 		this->Controls->Add(this->windingOrderGroupBox);
 		this->Controls->Add(this->topbar);
@@ -270,8 +300,15 @@ private: System::Void cameraResetButton_Click(System::Object^  sender, System::E
 	public:
 	System::Void getRendererValues()
 	{
+		// Clipping distances
 		nearClipNumericUpDown->Value = System::Convert::ToDecimal(renderer->camera.nearDistance);
 		farClipNumericUpDown->Value = System::Convert::ToDecimal(renderer->camera.farDistance);
+
+		// Actor Color
+		GLubyte* color = renderer->actors[0].color;
+		System::Drawing::Color winColor = System::Drawing::Color::FromArgb(color[0], color[1], color[2]);
+		colorButtonChip->BackColor = winColor;
+		actorColorDialog->Color = winColor;
 	}
 private: System::Void setRendererValues(System::Object^  sender, System::EventArgs^  e) {
 	if(nearClipNumericUpDown->Value >= 0)
@@ -279,5 +316,16 @@ private: System::Void setRendererValues(System::Object^  sender, System::EventAr
 	if (farClipNumericUpDown->Value >= 0)
 		renderer->camera.farDistance = System::Convert::ToSingle(farClipNumericUpDown->Value);
 
+}
+private: System::Void colorButton_Click(System::Object^  sender, System::EventArgs^  e) {
+	// Show dialog & check validation
+	System::Windows::Forms::DialogResult result = actorColorDialog->ShowDialog();
+	if (result == System::Windows::Forms::DialogResult::OK)
+	{
+		System::Drawing::Color newColor = actorColorDialog->Color;
+		renderer->actors[0].color[0] = newColor.R;
+		renderer->actors[0].color[1] = newColor.G;
+		renderer->actors[0].color[2] = newColor.B;
+	}
 }
 };

@@ -16,7 +16,7 @@ Actor::Actor(vector<vector<GLfloat>> vertices, vector<vector<GLint>> faces) : Ac
 void Actor::render()
 {
 	glBegin(GL_TRIANGLES);
-	glColor3f(1.0, 0.5, 0.3);
+	glColor3ubv(color);
 	//printf("size %i \n", faces.size());
 	for (auto&& face : faces)
 	{
