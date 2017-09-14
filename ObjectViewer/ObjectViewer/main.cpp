@@ -10,7 +10,10 @@
 int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
-
+	#ifndef _DEBUG
+		FreeConsole(); // Hide the console in release builds
+	#endif
+	
 	Camera camera = Camera();
 	Actor mainActor = WavefrontParser::wavefrontToActor("models/cactus.obj");
 	Renderer* renderer = new Renderer;

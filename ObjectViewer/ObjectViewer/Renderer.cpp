@@ -81,7 +81,6 @@ void Renderer::renderFrame()
 	glFlush();
 	glutSwapBuffers();
 	self->mainControls->getRendererValues();
-	printf("Clip%f \n", self->camera.farDistance);
 }
 
 void Renderer::idle()

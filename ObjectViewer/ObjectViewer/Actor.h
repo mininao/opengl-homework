@@ -1,8 +1,6 @@
 #pragma once
 #include <GL/freeglut.h>
 #include <vector>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
 using namespace std;
 
 class Actor

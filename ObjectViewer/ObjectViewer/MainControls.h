@@ -231,6 +231,11 @@ private:
 		this->nearClipLabel->TabIndex = 7;
 		this->nearClipLabel->Text = L"Near Clipping distance";
 		// 
+		// actorColorDialog
+		// 
+		this->actorColorDialog->AnyColor = true;
+		this->actorColorDialog->FullOpen = true;
+		// 
 		// colorButton
 		// 
 		this->colorButton->Location = System::Drawing::Point(34, 336);
