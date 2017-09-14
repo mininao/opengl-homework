@@ -1,6 +1,4 @@
 #include "Camera.h"
-#include "glm\gtx\string_cast.hpp"
-#include <iostream>
 
 Camera::Camera()
 {

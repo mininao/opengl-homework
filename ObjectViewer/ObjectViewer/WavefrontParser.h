@@ -1,5 +1,9 @@
 #pragma once
 #include "Actor.h"
+#include <glm\glm.hpp>
+#include <string>
+#include <fstream>
+#include <sstream>
 #include <string>
 
 using namespace std;
@@ -7,6 +11,6 @@ using namespace std;
 namespace WavefrontParser
 {
 		Actor wavefrontToActor(string path);
-		vector<GLfloat> parseVertexLine(string line);
-		vector<GLint> parseFaceLine(string line);
+		glm::vec3 parseVertexLine(string line);
+		vector<int> parseFaceLine(string line);
 }

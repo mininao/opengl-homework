@@ -37,6 +37,10 @@ private: System::Windows::Forms::NumericUpDown^  nearClipNumericUpDown;
 private: System::Windows::Forms::ColorDialog^  actorColorDialog;
 private: System::Windows::Forms::Button^  colorButton;
 private: System::Windows::Forms::Panel^  colorButtonChip;
+private: System::Windows::Forms::GroupBox^  renderingGroupBox;
+private: System::Windows::Forms::RadioButton^  pointRadioButton;
+private: System::Windows::Forms::RadioButton^  wireframeRadioButton;
+private: System::Windows::Forms::RadioButton^  fillRadioButton;
 
 
 
@@ -99,11 +103,16 @@ private:
 		this->actorColorDialog = (gcnew System::Windows::Forms::ColorDialog());
 		this->colorButton = (gcnew System::Windows::Forms::Button());
 		this->colorButtonChip = (gcnew System::Windows::Forms::Panel());
+		this->renderingGroupBox = (gcnew System::Windows::Forms::GroupBox());
+		this->pointRadioButton = (gcnew System::Windows::Forms::RadioButton());
+		this->wireframeRadioButton = (gcnew System::Windows::Forms::RadioButton());
+		this->fillRadioButton = (gcnew System::Windows::Forms::RadioButton());
 		this->topbar->SuspendLayout();
 		this->windingOrderGroupBox->SuspendLayout();
 		this->cameraGroupBox->SuspendLayout();
 		(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->farClipNumericUpDown))->BeginInit();
 		(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nearClipNumericUpDown))->BeginInit();
+		this->renderingGroupBox->SuspendLayout();
 		this->SuspendLayout();
 		// 
 		// title
@@ -256,6 +265,54 @@ private:
 		this->colorButtonChip->TabIndex = 8;
 		this->colorButtonChip->Click += gcnew System::EventHandler(this, &MainControls::colorButton_Click);
 		// 
+		// renderingGroupBox
+		// 
+		this->renderingGroupBox->Controls->Add(this->pointRadioButton);
+		this->renderingGroupBox->Controls->Add(this->wireframeRadioButton);
+		this->renderingGroupBox->Controls->Add(this->fillRadioButton);
+		this->renderingGroupBox->Location = System::Drawing::Point(218, 83);
+		this->renderingGroupBox->Name = L"renderingGroupBox";
+		this->renderingGroupBox->Size = System::Drawing::Size(200, 100);
+		this->renderingGroupBox->TabIndex = 9;
+		this->renderingGroupBox->TabStop = false;
+		this->renderingGroupBox->Text = L"Rendering mode";
+		// 
+		// pointRadioButton
+		// 
+		this->pointRadioButton->AutoSize = true;
+		this->pointRadioButton->Location = System::Drawing::Point(7, 65);
+		this->pointRadioButton->Name = L"pointRadioButton";
+		this->pointRadioButton->Size = System::Drawing::Size(79, 17);
+		this->pointRadioButton->TabIndex = 2;
+		this->pointRadioButton->TabStop = true;
+		this->pointRadioButton->Text = L"Point Cloud";
+		this->pointRadioButton->UseVisualStyleBackColor = true;
+		this->pointRadioButton->CheckedChanged += gcnew System::EventHandler(this, &MainControls::renderingModeChanged);
+		// 
+		// wireframeRadioButton
+		// 
+		this->wireframeRadioButton->AutoSize = true;
+		this->wireframeRadioButton->Location = System::Drawing::Point(7, 42);
+		this->wireframeRadioButton->Name = L"wireframeRadioButton";
+		this->wireframeRadioButton->Size = System::Drawing::Size(73, 17);
+		this->wireframeRadioButton->TabIndex = 1;
+		this->wireframeRadioButton->TabStop = true;
+		this->wireframeRadioButton->Text = L"Wireframe";
+		this->wireframeRadioButton->UseVisualStyleBackColor = true;
+		this->wireframeRadioButton->CheckedChanged += gcnew System::EventHandler(this, &MainControls::renderingModeChanged);
+		// 
+		// fillRadioButton
+		// 
+		this->fillRadioButton->AutoSize = true;
+		this->fillRadioButton->Location = System::Drawing::Point(7, 21);
+		this->fillRadioButton->Name = L"fillRadioButton";
+		this->fillRadioButton->Size = System::Drawing::Size(37, 17);
+		this->fillRadioButton->TabIndex = 0;
+		this->fillRadioButton->TabStop = true;
+		this->fillRadioButton->Text = L"Fill";
+		this->fillRadioButton->UseVisualStyleBackColor = true;
+		this->fillRadioButton->CheckedChanged += gcnew System::EventHandler(this, &MainControls::renderingModeChanged);
+		// 
 		// MainControls
 		// 
 		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -264,6 +321,7 @@ private:
 			static_cast<System::Int32>(static_cast<System::Byte>(245)));
 		this->ClientSize = System::Drawing::Size(453, 455);
 		this->ControlBox = false;
+		this->Controls->Add(this->renderingGroupBox);
 		this->Controls->Add(this->colorButtonChip);
 		this->Controls->Add(this->colorButton);
 		this->Controls->Add(this->cameraGroupBox);
@@ -282,6 +340,8 @@ private:
 		this->cameraGroupBox->PerformLayout();
 		(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->farClipNumericUpDown))->EndInit();
 		(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nearClipNumericUpDown))->EndInit();
+		this->renderingGroupBox->ResumeLayout(false);
+		this->renderingGroupBox->PerformLayout();
 		this->ResumeLayout(false);
 
 	}
@@ -298,6 +358,12 @@ private: System::Void ccwRadioButton_CheckedChanged(System::Object^  sender, Sys
 	}
 
 }
+private: System::Void renderingModeChanged(System::Object^  sender, System::EventArgs^  e) {
+	if(fillRadioButton->Checked) renderer->actors[0].renderingMode = GL_FILL;
+	else if(pointRadioButton->Checked) renderer->actors[0].renderingMode = GL_POINT;
+	else if(wireframeRadioButton->Checked) renderer->actors[0].renderingMode = GL_LINE;
+}
+
 private: System::Void cameraResetButton_Click(System::Object^  sender, System::EventArgs^  e) {
 	renderer->camera.reset();
 }
@@ -308,6 +374,11 @@ private: System::Void cameraResetButton_Click(System::Object^  sender, System::E
 		// Clipping distances
 		nearClipNumericUpDown->Value = System::Convert::ToDecimal(renderer->camera.nearDistance);
 		farClipNumericUpDown->Value = System::Convert::ToDecimal(renderer->camera.farDistance);
+
+		// Rendering mode
+		fillRadioButton->Checked = renderer->actors[0].renderingMode == GL_FILL;
+		pointRadioButton->Checked = renderer->actors[0].renderingMode == GL_POINT;
+		wireframeRadioButton->Checked = renderer->actors[0].renderingMode == GL_LINE;
 
 		// Actor Color
 		GLubyte* color = renderer->actors[0].color;

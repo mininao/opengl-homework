@@ -9,13 +9,13 @@
 
 int main(int argc, char **argv)
 {
-	glutInit(&argc, argv);
 	#ifndef _DEBUG
 		FreeConsole(); // Hide the console in release builds
-	#endif
+	#endif	
+	glutInit(&argc, argv);
 	
 	Camera camera = Camera();
-	Actor mainActor = WavefrontParser::wavefrontToActor("models/cactus.obj");
+	Actor mainActor = WavefrontParser::wavefrontToActor("models/simple.obj");
 	Renderer* renderer = new Renderer;
 	renderer->actors.push_back(mainActor);
 	renderer->camera = camera;
