@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 	glutInit(&argc, argv);
 
 	Camera camera = Camera();
-	Actor mainActor = WavefrontParser::wavefrontToActor("models/simple.obj");
+	Actor mainActor = WavefrontParser::wavefrontToActor("models/bunny.obj");
 	Renderer* renderer = new Renderer;
 	renderer->actors.push_back(mainActor);
 	renderer->camera = camera;

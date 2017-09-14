@@ -1,6 +1,7 @@
 #include "Renderer.h"
 
-// No idea why, but static class members need to be initialized outside of the class.
+// No idea why, but static class members need to be initialized outside of the class :
+
 Renderer *Renderer::self = 0;
 
 
@@ -35,17 +36,22 @@ void Renderer::start()
 
 void Renderer::handleResize(int w, int h)
 {
-	glViewport(0, 0, w, h);
+	// Use the Projection Matrix
 	glMatrixMode(GL_PROJECTION);
+
+	// Reset Matrix
 	glLoadIdentity();
-	glOrtho(-2.0, 2.0, -2.0,
-		2.0, -10.0, 10.0);
-	glMatrixMode(GL_MODELVIEW);
+
+	// Set the viewport to be the entire window
+	glViewport(0, 0, w, h);
+	self->camera.applyProjectionTransforms();
 }
 
 void Renderer::handleKeyboardKeypress(unsigned char key, int mouseX, int mouseY)
 {
 	if (key == 'q' || key == 'Q') exit(0);
+	if (key == 'z' || key == 'Z') self->camera.translate(0.1,0.0,0.0);
+	if (key == 's' || key == 'S') self->camera.translate(-0.1,0.0,0.0);
 }
 
 void Renderer::handleMouseButton(int button, int state, int mouseX, int mouseY)
@@ -57,10 +63,14 @@ void Renderer::renderFrame()
 	// Erase the previous frame's information :
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glShadeModel(GL_SMOOTH);
-	glLoadIdentity();
 	glFrontFace(self->windingOrder);
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
+	// Reset the ModelView Transformation matrix
+	glLoadIdentity();
+	self->camera.applyViewTransforms();
+
+	
 	for (auto&& actor : self->actors)
 	{
 		actor.render();

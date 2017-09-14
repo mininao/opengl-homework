@@ -27,12 +27,10 @@ void Actor::render()
 			//printf("x%f y%f z%f \n", (&vertex[0])[0], (&vertex[0])[1], (&vertex[0])[2]);
 
 		}
-//		for (unsigned i = face.size(); i-- > 0; )
-//		{
-//			vector<GLfloat> vertex = vertices[face[i] - 1];
-//			glVertex3fv(&vertex[0]);
-//		}
 	}
+//	glVertex3f(0.0, 0.0, 0.0);
+//	glVertex3f(0.0, 1.0, 1.0);
+//	glVertex3f(1.0, 0.0, 0.0);
 	glEnd();
 
 }
