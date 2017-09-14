@@ -1,10 +1,12 @@
 #pragma once
 #include <GL/freeglut.h>
 #include <vector>
+#include <vcclr.h>
 #include "Camera.h"
 #include "Actor.h"
 
-
+// Forward declaration of MainControls to avoid circular dependency
+ref class MainControls;
 
 class Renderer
 {
@@ -16,6 +18,7 @@ public:
 	vector<Actor> actors;
 	static Renderer* self;
 	GLenum windingOrder = GL_CCW;
+	gcroot<MainControls^> mainControls;
 private:
 	// These have to be static in order to be passed as function callbacks
 	// We use the static member "self" to refer to the instance in these functions.
