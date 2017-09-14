@@ -20,3 +20,8 @@ void Camera::translate(GLfloat x, GLfloat y, GLfloat z)
 {
 	position = { position[0] + x, position[1] + y, position[2] + z };
 }
+
+void Camera::applyProjectionMatrix()
+{
+	glFrustum(-2.0, 2.0, -2.0, 2.0, -10.0, 10.0);
+}

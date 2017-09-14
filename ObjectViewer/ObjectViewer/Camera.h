@@ -12,6 +12,9 @@ public:
 
 	array<GLfloat, 3> position = { 0.0, 0.0, 0.0 };
 	array<GLfloat, 3> rotation = { 0.0, 0.0, 0.0 };
+	GLfloat nearDistance = 0.0;
+	GLfloat farDistance = 20.0;
 	void rotate(GLfloat x, GLfloat y, GLfloat z);
 	void translate(GLfloat x, GLfloat y, GLfloat z);
+	void Camera::applyProjectionMatrix();
 };

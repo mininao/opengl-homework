@@ -1,8 +1,12 @@
 #include "Renderer.h"
 
+// No idea why, but static class members need to be initialized outside of the class.
+Renderer *Renderer::self = 0;
+
+
 Renderer::Renderer()
 {
-	//setupSelf();
+	setupSelf();
 }
 
 Renderer::~Renderer()
@@ -16,7 +20,6 @@ void Renderer::setupSelf()
 
 void Renderer::start()
 {
-	setupSelf();
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(windowHeight, windowWidth);
 	glutInitContextFlags(GLUT_COMPATIBILITY_PROFILE);
@@ -25,6 +28,7 @@ void Renderer::start()
 	glutDisplayFunc(Renderer::renderFrame);
 	glutMouseFunc(Renderer::handleMouseButton);
 	glutKeyboardFunc(Renderer::handleKeyboardKeypress);
+	glutIdleFunc(Renderer::idle);
 	glEnable(GL_DEPTH_TEST);
 	glutMainLoop();
 }
@@ -54,10 +58,18 @@ void Renderer::renderFrame()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glShadeModel(GL_SMOOTH);
 	glLoadIdentity();
-	for (auto&& actor : Renderer::self->actors)
+	glFrontFace(self->windingOrder);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	for (auto&& actor : self->actors)
 	{
 		actor.render();
 	}
 	glFlush();
 	glutSwapBuffers();
+}
+
+void Renderer::idle()
+{
+	glutPostRedisplay();
 }

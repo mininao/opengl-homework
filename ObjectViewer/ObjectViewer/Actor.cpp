@@ -17,13 +17,21 @@ void Actor::render()
 {
 	glBegin(GL_TRIANGLES);
 	glColor3f(1.0, 0.5, 0.3);
+	//printf("size %i \n", faces.size());
 	for (auto&& face : faces)
 	{
 		for (auto&& vertexId : face)
 		{
 			vector<GLfloat> vertex = vertices[vertexId - 1];
 			glVertex3fv(&vertex[0]);
+			//printf("x%f y%f z%f \n", (&vertex[0])[0], (&vertex[0])[1], (&vertex[0])[2]);
+
 		}
+//		for (unsigned i = face.size(); i-- > 0; )
+//		{
+//			vector<GLfloat> vertex = vertices[face[i] - 1];
+//			glVertex3fv(&vertex[0]);
+//		}
 	}
 	glEnd();
 
