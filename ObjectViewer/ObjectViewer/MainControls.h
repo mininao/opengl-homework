@@ -2,8 +2,10 @@
 #include "Renderer.h"
 #include "Camera.h"
 #include "Actor.h"
+#include "WavefrontParser.h"
 #include <GL/freeglut.h>
 #include <functional>
+#include <msclr\marshal_cppstd.h>
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -41,6 +43,9 @@ private: System::Windows::Forms::GroupBox^  renderingGroupBox;
 private: System::Windows::Forms::RadioButton^  pointRadioButton;
 private: System::Windows::Forms::RadioButton^  wireframeRadioButton;
 private: System::Windows::Forms::RadioButton^  fillRadioButton;
+private: System::Windows::Forms::Button^  loadModelButton;
+
+private: System::Windows::Forms::OpenFileDialog^  modelOpenFileDialog;
 
 
 
@@ -107,6 +112,8 @@ private:
 		this->pointRadioButton = (gcnew System::Windows::Forms::RadioButton());
 		this->wireframeRadioButton = (gcnew System::Windows::Forms::RadioButton());
 		this->fillRadioButton = (gcnew System::Windows::Forms::RadioButton());
+		this->loadModelButton = (gcnew System::Windows::Forms::Button());
+		this->modelOpenFileDialog = (gcnew System::Windows::Forms::OpenFileDialog());
 		this->topbar->SuspendLayout();
 		this->windingOrderGroupBox->SuspendLayout();
 		this->cameraGroupBox->SuspendLayout();
@@ -313,6 +320,21 @@ private:
 		this->fillRadioButton->UseVisualStyleBackColor = true;
 		this->fillRadioButton->CheckedChanged += gcnew System::EventHandler(this, &MainControls::renderingModeChanged);
 		// 
+		// loadModelButton
+		// 
+		this->loadModelButton->Location = System::Drawing::Point(240, 336);
+		this->loadModelButton->Name = L"loadModelButton";
+		this->loadModelButton->Size = System::Drawing::Size(155, 37);
+		this->loadModelButton->TabIndex = 10;
+		this->loadModelButton->Text = L"Load new model";
+		this->loadModelButton->UseVisualStyleBackColor = true;
+		this->loadModelButton->Click += gcnew System::EventHandler(this, &MainControls::loadModelButton_Click);
+		// 
+		// modelOpenFileDialog
+		// 
+		this->modelOpenFileDialog->FileName = L"simple.obj";
+		this->modelOpenFileDialog->InitialDirectory = L"models";
+		// 
 		// MainControls
 		// 
 		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -321,6 +343,7 @@ private:
 			static_cast<System::Int32>(static_cast<System::Byte>(245)));
 		this->ClientSize = System::Drawing::Size(453, 455);
 		this->ControlBox = false;
+		this->Controls->Add(this->loadModelButton);
 		this->Controls->Add(this->renderingGroupBox);
 		this->Controls->Add(this->colorButtonChip);
 		this->Controls->Add(this->colorButton);
@@ -402,6 +425,13 @@ private: System::Void colorButton_Click(System::Object^  sender, System::EventAr
 		renderer->actors[0].color[0] = newColor.R;
 		renderer->actors[0].color[1] = newColor.G;
 		renderer->actors[0].color[2] = newColor.B;
+	}
+}
+private: System::Void loadModelButton_Click(System::Object^  sender, System::EventArgs^  e) {
+	if (modelOpenFileDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+	{
+		Actor mainActor = WavefrontParser::wavefrontToActor(msclr::interop::marshal_as<string>(modelOpenFileDialog->FileName));
+		renderer->actors[0] = mainActor;
 	}
 }
 };

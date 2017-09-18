@@ -1,6 +1,7 @@
 #pragma once
 #include "Actor.h"
 #include <glm\glm.hpp>
+#include <algorithm>
 #include <string>
 #include <fstream>
 #include <sstream>

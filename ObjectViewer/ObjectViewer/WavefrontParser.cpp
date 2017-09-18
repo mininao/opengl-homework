@@ -23,6 +23,8 @@ namespace WavefrontParser
 		string line;
 		vector<glm::vec3> vertices;
 		vector<int> faces;
+		glm::vec3 maxCoordinates;
+		glm::vec3 minCoordinates;
 
 		printf("begin parseloop \n");
 		while (getline(file, line))
@@ -31,7 +33,16 @@ namespace WavefrontParser
 
 			if (lineStart == "v ")
 			{
-				vertices.push_back(parseVertexLine(line));
+				glm::vec3 vertex = parseVertexLine(line);
+				if(vertices.size() == 0)
+				{
+					maxCoordinates, minCoordinates = vertex;
+				} else
+				{
+					maxCoordinates = { max(vertex.x, maxCoordinates.x), max(vertex.y, maxCoordinates.y), max(vertex.z, maxCoordinates.z) };
+					minCoordinates = { min(vertex.x, minCoordinates.x), min(vertex.y, minCoordinates.y), min(vertex.z, minCoordinates.z) };					
+				}
+				vertices.push_back(vertex);
 			}
 			else if (lineStart == "f ")
 			{

@@ -7,11 +7,13 @@
 #include "Camera.h"
 #include "Renderer.h"
 
-int main(int argc, char **argv)
+// STAThread is a .NET/CLR shenanigan needed for the file open dialog (https://goo.gl/X8Jemw)
+[System::STAThread] int main(int argc, char **argv)
 {
 	#ifndef _DEBUG
 		FreeConsole(); // Hide the console in release builds
 	#endif	
+	
 	glutInit(&argc, argv);
 	
 	Camera camera = Camera();
