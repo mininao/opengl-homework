@@ -46,6 +46,7 @@ private: System::Windows::Forms::RadioButton^  fillRadioButton;
 private: System::Windows::Forms::Button^  loadModelButton;
 
 private: System::Windows::Forms::OpenFileDialog^  modelOpenFileDialog;
+private: System::Windows::Forms::CheckBox^  boundingBoxCheckBox;
 
 
 
@@ -114,6 +115,7 @@ private:
 		this->fillRadioButton = (gcnew System::Windows::Forms::RadioButton());
 		this->loadModelButton = (gcnew System::Windows::Forms::Button());
 		this->modelOpenFileDialog = (gcnew System::Windows::Forms::OpenFileDialog());
+		this->boundingBoxCheckBox = (gcnew System::Windows::Forms::CheckBox());
 		this->topbar->SuspendLayout();
 		this->windingOrderGroupBox->SuspendLayout();
 		this->cameraGroupBox->SuspendLayout();
@@ -176,7 +178,7 @@ private:
 			static_cast<System::Byte>(0)));
 		this->windingOrderGroupBox->Location = System::Drawing::Point(12, 83);
 		this->windingOrderGroupBox->Name = L"windingOrderGroupBox";
-		this->windingOrderGroupBox->Size = System::Drawing::Size(159, 73);
+		this->windingOrderGroupBox->Size = System::Drawing::Size(177, 73);
 		this->windingOrderGroupBox->TabIndex = 4;
 		this->windingOrderGroupBox->TabStop = false;
 		this->windingOrderGroupBox->Text = L"Polygons winding order";
@@ -198,9 +200,9 @@ private:
 		this->cameraGroupBox->Controls->Add(this->farClipLabel);
 		this->cameraGroupBox->Controls->Add(this->nearClipLabel);
 		this->cameraGroupBox->Controls->Add(this->cameraResetButton);
-		this->cameraGroupBox->Location = System::Drawing::Point(12, 182);
+		this->cameraGroupBox->Location = System::Drawing::Point(12, 174);
 		this->cameraGroupBox->Name = L"cameraGroupBox";
-		this->cameraGroupBox->Size = System::Drawing::Size(200, 134);
+		this->cameraGroupBox->Size = System::Drawing::Size(177, 134);
 		this->cameraGroupBox->TabIndex = 6;
 		this->cameraGroupBox->TabStop = false;
 		this->cameraGroupBox->Text = L"Camera";
@@ -254,10 +256,10 @@ private:
 		// 
 		// colorButton
 		// 
-		this->colorButton->Location = System::Drawing::Point(34, 336);
+		this->colorButton->Location = System::Drawing::Point(12, 327);
 		this->colorButton->Name = L"colorButton";
 		this->colorButton->Padding = System::Windows::Forms::Padding(0, 0, 25, 0);
-		this->colorButton->Size = System::Drawing::Size(155, 37);
+		this->colorButton->Size = System::Drawing::Size(177, 37);
 		this->colorButton->TabIndex = 7;
 		this->colorButton->Text = L"Change model color";
 		this->colorButton->UseVisualStyleBackColor = true;
@@ -266,7 +268,7 @@ private:
 		// colorButtonChip
 		// 
 		this->colorButtonChip->BackColor = System::Drawing::Color::Red;
-		this->colorButtonChip->Location = System::Drawing::Point(156, 345);
+		this->colorButtonChip->Location = System::Drawing::Point(156, 336);
 		this->colorButtonChip->Name = L"colorButtonChip";
 		this->colorButtonChip->Size = System::Drawing::Size(21, 19);
 		this->colorButtonChip->TabIndex = 8;
@@ -322,9 +324,9 @@ private:
 		// 
 		// loadModelButton
 		// 
-		this->loadModelButton->Location = System::Drawing::Point(240, 336);
+		this->loadModelButton->Location = System::Drawing::Point(12, 388);
 		this->loadModelButton->Name = L"loadModelButton";
-		this->loadModelButton->Size = System::Drawing::Size(155, 37);
+		this->loadModelButton->Size = System::Drawing::Size(177, 37);
 		this->loadModelButton->TabIndex = 10;
 		this->loadModelButton->Text = L"Load new model";
 		this->loadModelButton->UseVisualStyleBackColor = true;
@@ -333,7 +335,18 @@ private:
 		// modelOpenFileDialog
 		// 
 		this->modelOpenFileDialog->FileName = L"simple.obj";
-		this->modelOpenFileDialog->InitialDirectory = L"models";
+		this->modelOpenFileDialog->InitialDirectory = L"E:\\E5\\CS412-CG\\opengl-homework\\ObjectViewer\\ObjectViewer\\models";
+		// 
+		// boundingBoxCheckBox
+		// 
+		this->boundingBoxCheckBox->AutoSize = true;
+		this->boundingBoxCheckBox->Location = System::Drawing::Point(225, 200);
+		this->boundingBoxCheckBox->Name = L"boundingBoxCheckBox";
+		this->boundingBoxCheckBox->Size = System::Drawing::Size(122, 17);
+		this->boundingBoxCheckBox->TabIndex = 11;
+		this->boundingBoxCheckBox->Text = L"Show Bounding Box";
+		this->boundingBoxCheckBox->UseVisualStyleBackColor = true;
+		this->boundingBoxCheckBox->CheckedChanged += gcnew System::EventHandler(this, &MainControls::boundingBoxCheckBox_CheckedChanged);
 		// 
 		// MainControls
 		// 
@@ -343,6 +356,7 @@ private:
 			static_cast<System::Int32>(static_cast<System::Byte>(245)));
 		this->ClientSize = System::Drawing::Size(453, 455);
 		this->ControlBox = false;
+		this->Controls->Add(this->boundingBoxCheckBox);
 		this->Controls->Add(this->loadModelButton);
 		this->Controls->Add(this->renderingGroupBox);
 		this->Controls->Add(this->colorButtonChip);
@@ -366,6 +380,7 @@ private:
 		this->renderingGroupBox->ResumeLayout(false);
 		this->renderingGroupBox->PerformLayout();
 		this->ResumeLayout(false);
+		this->PerformLayout();
 
 	}
 #pragma endregion
@@ -388,27 +403,31 @@ private: System::Void renderingModeChanged(System::Object^  sender, System::Even
 }
 
 private: System::Void cameraResetButton_Click(System::Object^  sender, System::EventArgs^  e) {
-	renderer->camera.reset();
+	renderer->camera.fitActor(renderer->actors[0]);
 }
 
-	public:
-	System::Void getRendererValues()
-	{
-		// Clipping distances
-		nearClipNumericUpDown->Value = System::Convert::ToDecimal(renderer->camera.nearDistance);
-		farClipNumericUpDown->Value = System::Convert::ToDecimal(renderer->camera.farDistance);
+public:
+System::Void getRendererValues()
+{
+	// Clipping distances
+	nearClipNumericUpDown->Value = System::Convert::ToDecimal(renderer->camera.nearDistance);
+	farClipNumericUpDown->Value = System::Convert::ToDecimal(renderer->camera.farDistance);
 
-		// Rendering mode
-		fillRadioButton->Checked = renderer->actors[0].renderingMode == GL_FILL;
-		pointRadioButton->Checked = renderer->actors[0].renderingMode == GL_POINT;
-		wireframeRadioButton->Checked = renderer->actors[0].renderingMode == GL_LINE;
+	// Rendering mode
+	fillRadioButton->Checked = renderer->actors[0].renderingMode == GL_FILL;
+	pointRadioButton->Checked = renderer->actors[0].renderingMode == GL_POINT;
+	wireframeRadioButton->Checked = renderer->actors[0].renderingMode == GL_LINE;
 
-		// Actor Color
-		GLubyte* color = renderer->actors[0].color;
-		System::Drawing::Color winColor = System::Drawing::Color::FromArgb(color[0], color[1], color[2]);
-		colorButtonChip->BackColor = winColor;
-		actorColorDialog->Color = winColor;
-	}
+	// Actor Color
+	GLubyte* color = renderer->actors[0].color;
+	System::Drawing::Color winColor = System::Drawing::Color::FromArgb(color[0], color[1], color[2]);
+	colorButtonChip->BackColor = winColor;
+	actorColorDialog->Color = winColor;
+
+	// Show Bounding Box
+	boundingBoxCheckBox->Checked = renderer->actors[0].showBoundingBox;
+}
+
 private: System::Void setRendererValues(System::Object^  sender, System::EventArgs^  e) {
 	if(nearClipNumericUpDown->Value >= 0)
 		renderer->camera.nearDistance = System::Convert::ToSingle(nearClipNumericUpDown->Value);
@@ -432,6 +451,10 @@ private: System::Void loadModelButton_Click(System::Object^  sender, System::Eve
 	{
 		Actor mainActor = WavefrontParser::wavefrontToActor(msclr::interop::marshal_as<string>(modelOpenFileDialog->FileName));
 		renderer->actors[0] = mainActor;
+		renderer->camera.fitActor(mainActor);
 	}
+}
+private: System::Void boundingBoxCheckBox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+	renderer->actors[0].showBoundingBox = boundingBoxCheckBox->Checked;
 }
 };

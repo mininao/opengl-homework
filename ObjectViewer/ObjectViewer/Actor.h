@@ -16,6 +16,7 @@ public:
 	GLubyte color[3] = { 0xFF, 0x7F, 0x46 };
 	glm::vec3 maxCoordinates;
 	glm::vec3 minCoordinates;
+	bool showBoundingBox = false;
 	GLenum renderingMode = GL_FILL;
 private:
 	vector<glm::vec3> vertices;

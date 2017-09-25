@@ -20,12 +20,12 @@
 	Actor mainActor = WavefrontParser::wavefrontToActor("models/simple.obj");
 	Renderer* renderer = new Renderer;
 	renderer->actors.push_back(mainActor);
+	camera.fitActor(mainActor);
 	renderer->camera = camera;
-	
+
 	MainControls^ mainControls = gcnew MainControls(renderer);
 	mainControls->Show();
 
 	renderer->mainControls = mainControls;
-
 	renderer->start();
 }

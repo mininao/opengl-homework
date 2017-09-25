@@ -42,17 +42,21 @@ void Renderer::handleResize(int w, int h)
 
 void Renderer::handleKeyboardKeypress(unsigned char key, int mouseX, int mouseY)
 {
-	if (key == 'x' || key == 'X') exit(0);
+	if (key == 'a' || key == 'A') exit(0);
 
 	if (key == 'z' || key == 'Z') self->camera.translate(0.1f,0.0f,0.0f);
 	if (key == 's' || key == 'S') self->camera.translate(-0.1f,0.0f,0.0f);
 	if (key == 'q' || key == 'Q') self->camera.translate(0.0f,0.1f,0.0f);
 	if (key == 'd' || key == 'D') self->camera.translate(0.0f,-0.1f,0.0f);
+	if (key == 'w' || key == 'W') self->camera.translate(0.0f,0.0f,0.1f);
+	if (key == 'x' || key == 'X') self->camera.translate(0.0f,0.0f,-0.1f);
 
 	if (key == 'y' || key == 'Y') self->camera.rotate(0.0f,-0.01f,0.0f);
 	if (key == 'h' || key == 'H') self->camera.rotate(0.0f,0.01f,0.0f);
 	if (key == 'g' || key == 'G') self->camera.rotate(0.01f,0.0f,0.0f);
 	if (key == 'j' || key == 'J') self->camera.rotate(-0.01f,0.0f,0.0f);
+	if (key == 'b' || key == 'B') self->camera.rotate(0.0f, 0.0f, 0.1f);
+	if (key == 'n' || key == 'N') self->camera.rotate(0.0f, 0.0f, -0.1f);
 }
 
 void Renderer::handleMouseButton(int button, int state, int mouseX, int mouseY)

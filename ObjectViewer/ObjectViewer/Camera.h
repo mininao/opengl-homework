@@ -5,6 +5,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <array>
+#include <algorithm>
+#include <math.h>
+#include "Actor.h"
 
 using namespace std;
 
@@ -23,8 +26,10 @@ public:
 
 	GLfloat nearDistance = 0.1f;
 	GLfloat farDistance = 100.0f;
+	GLfloat fov = 45.0f;
 	void rotate(GLfloat yaw, GLfloat pitch, GLfloat roll);
 	void translate(GLfloat frontTranslation, GLfloat rightTranslation, GLfloat upTranslation);
+	void fitActor(Actor actor);
 	void reset();
 	void Camera::applyViewTransforms();
 	void Camera::applyProjectionTransforms();

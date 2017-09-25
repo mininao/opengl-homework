@@ -36,7 +36,8 @@ namespace WavefrontParser
 				glm::vec3 vertex = parseVertexLine(line);
 				if(vertices.size() == 0)
 				{
-					maxCoordinates, minCoordinates = vertex;
+					maxCoordinates = vertex;
+					minCoordinates = vertex;
 				} else
 				{
 					maxCoordinates = { max(vertex.x, maxCoordinates.x), max(vertex.y, maxCoordinates.y), max(vertex.z, maxCoordinates.z) };
@@ -57,7 +58,10 @@ namespace WavefrontParser
 		}
 		printf("end parseloop \n");
 
-		return Actor(vertices,faces);
+		Actor actor = Actor(vertices, faces);
+		actor.maxCoordinates = maxCoordinates;
+		actor.minCoordinates = minCoordinates;
+		return actor;
 	}
 
 	glm::vec3 parseVertexLine(string line)

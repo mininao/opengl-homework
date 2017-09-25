@@ -32,10 +32,27 @@ void Camera::translate(GLfloat frontTranslation, GLfloat rightTranslation, GLflo
 	position += up*upTranslation;
 }
 
+void Camera::fitActor(Actor actor)
+{
+	// Give enough recoil to see object (fit 80% of frame)
+	GLfloat actorMaxWidth = actor.maxCoordinates.x - actor.minCoordinates.x;
+	GLfloat actorMaxHeight = actor.maxCoordinates.y - actor.minCoordinates.y;
+	GLfloat actorMaxDimension = max(actorMaxHeight, actorMaxWidth);
+	GLfloat requiredRecoil = (actorMaxDimension) / tan(fov / 2.0f);
+	reset();
+	printf("x%f y%f z%f \n", position.x, position.y, position.z);
+	position.z = requiredRecoil + actor.maxCoordinates.z;
+	printf("x%f y%f z%f \n", position.x, position.y, position.z);
+	// Center camera on X and Y
+	position.x = actor.minCoordinates.x + (actorMaxWidth / 2);
+	position.y = actor.minCoordinates.y + (actorMaxHeight / 2);
+	printf("x%f y%f z%f \n", position.x, position.y, position.z);
+	printf("maxZactor %f \n", actor.maxCoordinates.z);
+}
+
 void Camera::reset()
 {
-	position = glm::vec3(0.0f, 0.0f, 20.0f);
-
+	position = glm::vec3(0.0f, 0.0f, 0.0f);
 	front = glm::vec3(0.0f, 0.0f, -1.0f);
 	right = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), front));
 	up = glm::cross(front, right);
@@ -58,6 +75,6 @@ void Camera::applyProjectionTransforms()
 	// Reset Matrix
 	glLoadIdentity();
 	// TODO Support aspect ratio modification by window resizing
-	gluPerspective(45.0f, 1.0f, nearDistance, farDistance);
+	gluPerspective(fov, 1.0f, nearDistance, farDistance);
 	glMatrixMode(GL_MODELVIEW);
 }
