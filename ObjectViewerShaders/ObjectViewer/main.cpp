@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <functional>
+#include <GL/glew.h>
 #include "GL/freeglut.h"
 #include "MainControls.h"
 #include "WavefrontParser.h"

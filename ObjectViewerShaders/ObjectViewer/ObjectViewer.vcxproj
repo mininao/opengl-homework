@@ -134,6 +134,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainControls.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ShadersRenderer.cpp" />
     <ClCompile Include="WavefrontParser.cpp" />
   </ItemGroup>
@@ -144,6 +145,7 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="ShadersRenderer.h" />
     <ClInclude Include="WavefrontParser.h" />
   </ItemGroup>
@@ -158,6 +160,10 @@
     <EmbeddedResource Include="MainControls.resx">
       <DependentUpon>MainControls.h</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="shaders\fragshader.txt" />
+    <Text Include="shaders\vertexshader.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

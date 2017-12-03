@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Actor.h"
 #include "WavefrontParser.h"
+#include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <functional>
 #include <msclr\marshal_cppstd.h>

@@ -1,9 +1,14 @@
 #pragma once
+#include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <vector>
 #include <vcclr.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "Camera.h"
 #include "Actor.h"
+#include "ShaderManager.h"
+
 
 // Forward declaration of MainControls to avoid circular dependency
 ref class MainControls;
@@ -20,11 +25,9 @@ public:
 	static void renderFrame();
 	int windowId = 0;
 private:
-	// These have to be static in order to be passed as function callbacks
-	// We use the static member "self" to refer to the instance in these functions.
-	// This is mostly ok because there's only on renderer at a time.
-	// See https://stackoverflow.com/questions/3589422/using-opengl-glutdisplayfunc-within-class
-	// (Adopted the 1st approach in the 1st answer)
+	vector<GLuint> shaders;
+	GLuint programId;
 	void setupSelf();
+	void initShaders();
 };
 

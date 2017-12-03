@@ -1,4 +1,5 @@
 #pragma once
+#include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
@@ -33,4 +34,6 @@ public:
 	void reset();
 	void Camera::applyViewTransforms();
 	void Camera::applyProjectionTransforms();
+	glm::mat4 Camera::getProjectionMatrix();
+	glm::mat4 Camera::getViewMatrix();
 };

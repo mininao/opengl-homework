@@ -34,6 +34,7 @@ void Renderer::start()
 	glutKeyboardFunc(Renderer::handleKeyboardKeypress);
 
 	srenderer->windowId = glutCreateWindow("Object Viewer (Shaders mode)");
+	glewInit();
 	glutReshapeFunc(Renderer::handleResize);
 	glutDisplayFunc(ShadersRenderer::renderFrame);
 	glutMouseFunc(Renderer::handleMouseButton);

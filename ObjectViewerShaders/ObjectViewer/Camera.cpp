@@ -78,3 +78,11 @@ void Camera::applyProjectionTransforms()
 	gluPerspective(fov, 1.0f, nearDistance, farDistance);
 	glMatrixMode(GL_MODELVIEW);
 }
+
+glm::mat4 Camera::getProjectionMatrix() {
+	return glm::perspective(fov, 1.0f, nearDistance, farDistance);
+}
+
+glm::mat4 Camera::getViewMatrix() {
+	return glm::lookAt(position, position + front, up);
+}
