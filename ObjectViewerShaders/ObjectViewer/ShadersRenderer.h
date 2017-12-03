@@ -18,7 +18,7 @@ public:
 	static ShadersRenderer* self;
 	Renderer* renderer;
 	static void renderFrame();
-	static void idle();
+	int windowId = 0;
 private:
 	// These have to be static in order to be passed as function callbacks
 	// We use the static member "self" to refer to the instance in these functions.

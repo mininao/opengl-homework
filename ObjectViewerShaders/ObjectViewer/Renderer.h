@@ -35,5 +35,5 @@ private:
 	static void idle();
 	int windowHeight = 1000;
 	int windowWidth = 1000;
+	int windowId = 0;
 };
-

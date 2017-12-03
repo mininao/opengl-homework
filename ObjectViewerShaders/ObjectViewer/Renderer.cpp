@@ -22,24 +22,24 @@ void Renderer::setupSelf()
 void Renderer::start()
 {
 	printf("renderer begin");
+	srenderer->renderer = self;
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(windowHeight, windowWidth);
 	glutInitContextFlags(GLUT_COMPATIBILITY_PROFILE);
 
-	glutCreateWindow("Object Viewer");
+	windowId = glutCreateWindow("Object Viewer");
 	glutReshapeFunc(Renderer::handleResize);
 	glutDisplayFunc(Renderer::renderFrame);
 	glutMouseFunc(Renderer::handleMouseButton);
 	glutKeyboardFunc(Renderer::handleKeyboardKeypress);
-	glutIdleFunc(Renderer::idle);
 
-	glutCreateWindow("Object Viewer (Shaders mode)");
+	srenderer->windowId = glutCreateWindow("Object Viewer (Shaders mode)");
 	glutReshapeFunc(Renderer::handleResize);
 	glutDisplayFunc(ShadersRenderer::renderFrame);
 	glutMouseFunc(Renderer::handleMouseButton);
 	glutKeyboardFunc(Renderer::handleKeyboardKeypress);
-	glutIdleFunc(Renderer::idle);
 
+	glutIdleFunc(Renderer::idle);
 	glEnable(GL_DEPTH_TEST);
 	glutMainLoop();
 }
@@ -100,5 +100,8 @@ void Renderer::renderFrame()
 
 void Renderer::idle()
 {
+	glutSetWindow(self->windowId);
+	glutPostRedisplay();
+	glutSetWindow(self->srenderer->windowId);
 	glutPostRedisplay();
 }
