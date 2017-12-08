@@ -22,7 +22,7 @@ namespace WavefrontParser
 		
 		string line;
 		vector<glm::vec3> vertices;
-		vector<int> faces;
+		vector<vector<int>> faces;
 		glm::vec3 maxCoordinates;
 		glm::vec3 minCoordinates;
 
@@ -48,7 +48,8 @@ namespace WavefrontParser
 			else if (lineStart == "f ")
 			{
 				vector<int> face = parseFaceLine(line);
-				faces.insert(faces.end(), face.begin(), face.end());
+				//faces.insert(faces.end(), face.begin(), face.end());
+				faces.push_back(face);
 			}
 			else
 			{

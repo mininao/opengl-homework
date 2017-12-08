@@ -5,6 +5,7 @@
 #include "MainControls.h"
 #include "WavefrontParser.h"
 #include "Actor.h"
+#include "Light.h"
 #include "Camera.h"
 #include "Renderer.h"
 #include "ShadersRenderer.h"
@@ -20,8 +21,10 @@
 	
 	Camera camera = Camera();
 	Actor mainActor = WavefrontParser::wavefrontToActor("models/simple.obj");
+	Light light = Light();
 	Renderer* renderer = new Renderer;
 	renderer->actors.push_back(mainActor);
+	renderer->light = light;
 	camera.fitActor(mainActor);
 	renderer->camera = camera;
 

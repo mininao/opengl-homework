@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainControls.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -141,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="MainControls.h">
       <FileType>CppForm</FileType>
     </ClInclude>

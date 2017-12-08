@@ -41,7 +41,6 @@ void Renderer::start()
 	glutKeyboardFunc(Renderer::handleKeyboardKeypress);
 
 	glutIdleFunc(Renderer::idle);
-	glEnable(GL_DEPTH_TEST);
 	glutMainLoop();
 }
 
@@ -69,6 +68,13 @@ void Renderer::handleKeyboardKeypress(unsigned char key, int mouseX, int mouseY)
 	if (key == 'j' || key == 'J') self->camera.rotate(-0.01f,0.0f,0.0f);
 	if (key == 'b' || key == 'B') self->camera.rotate(0.0f, 0.0f, 0.1f);
 	if (key == 'n' || key == 'N') self->camera.rotate(0.0f, 0.0f, -0.1f);
+
+	if (key == 'o' || key == 'O') self->light.position.y += 0.1f;
+	if (key == 'l' || key == 'L') self->light.position.y -= 0.1f;
+	if (key == 'k' || key == 'K') self->light.position.x -= 0.1f;
+	if (key == 'm' || key == 'M') self->light.position.x += 0.1f;
+	if (key == 'i' || key == 'I') self->light.position.z += 0.1f;
+	if (key == 'p' || key == 'P') self->light.position.z -= 0.1f;
 }
 
 void Renderer::handleMouseButton(int button, int state, int mouseX, int mouseY)
@@ -79,7 +85,10 @@ void Renderer::renderFrame()
 {
 	// Erase the previous frame's information :
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glShadeModel(GL_SMOOTH);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_COLOR_MATERIAL);
+	glShadeModel(self->shadingModel);
 	self->camera.applyProjectionTransforms();
 	// Setup Culling
 	glFrontFace(self->windingOrder);
@@ -87,13 +96,15 @@ void Renderer::renderFrame()
 	glEnable(GL_CULL_FACE);
 
 	glLoadIdentity();
+
 	self->camera.applyViewTransforms();
-	
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, glm::value_ptr(self->ambientColor));
+	self->light.declareFixedPipeline();
+
 	for (auto&& actor : self->actors)
 	{
 		actor.render();
 	}
-
 	glFlush();
 	glutSwapBuffers();
 	self->mainControls->getRendererValues();
@@ -101,6 +112,10 @@ void Renderer::renderFrame()
 
 void Renderer::idle()
 {
+	if (self->light.animateRotation) {
+		self->light.position = glm::rotateY(self->light.position, 0.1f);
+		self->light.position = glm::rotateX(self->light.position, 0.1f);
+	}
 	glutSetWindow(self->windowId);
 	glutPostRedisplay();
 	glutSetWindow(self->srenderer->windowId);

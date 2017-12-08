@@ -3,9 +3,13 @@
 #include <GL/freeglut.h>
 #include <vector>
 #include <vcclr.h>
+#include <glm/glm.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 #include "Camera.h"
 #include "Actor.h"
+#include "Light.h"
 #include "ShadersRenderer.h"
+
 
 // Forward declaration of MainControls to avoid circular dependency
 ref class MainControls;
@@ -18,9 +22,12 @@ public:
 	void start();
 	Camera camera;
 	vector<Actor> actors;
+	Light light;
 	static Renderer* self;
 	ShadersRenderer* srenderer;
 	GLenum windingOrder = GL_CCW;
+	GLenum shadingModel = GL_SMOOTH;
+	glm::vec4 ambientColor = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
 	gcroot<MainControls^> mainControls;
 private:
 	// These have to be static in order to be passed as function callbacks
