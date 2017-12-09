@@ -669,8 +669,8 @@ System::Void getRendererValues()
 	wireframeRadioButton->Checked = renderer->actors[0].renderingMode == GL_LINE;
 
 	// Actor Color
-	GLubyte* color = renderer->actors[0].color;
-	System::Drawing::Color winColor = System::Drawing::Color::FromArgb(color[0], color[1], color[2]);
+	glm::vec4 color = renderer->actors[0].color * 255.0f;
+	System::Drawing::Color winColor = System::Drawing::Color::FromArgb(color.a, color.r, color.g, color.b);
 	colorButtonChip->BackColor = winColor;
 	actorColorDialog->Color = winColor;
 
@@ -717,13 +717,10 @@ private: System::Void setRendererValues(System::Object^  sender, System::EventAr
 }
 private: System::Void colorButton_Click(System::Object^  sender, System::EventArgs^  e) {
 	// Show dialog & check validation
-	System::Windows::Forms::DialogResult result = actorColorDialog->ShowDialog();
-	if (result == System::Windows::Forms::DialogResult::OK)
+	if (actorColorDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK)
 	{
 		System::Drawing::Color newColor = actorColorDialog->Color;
-		renderer->actors[0].color[0] = newColor.R;
-		renderer->actors[0].color[1] = newColor.G;
-		renderer->actors[0].color[2] = newColor.B;
+		renderer->actors[0].color = glm::vec4(newColor.R / 255.0f, newColor.G / 255.0f, newColor.B / 255.0f, newColor.A / 255.0f);
 	}
 }
 private: System::Void loadModelButton_Click(System::Object^  sender, System::EventArgs^  e) {

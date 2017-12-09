@@ -1,10 +1,11 @@
 #include "Actor.h"
 
 
-Actor::Actor(vector<glm::vec3> vertices, vector<vector<int>> faces)
+Actor::Actor(vector<glm::vec3> vertices, vector<vector<int>> faces, vector<int> rawFaces)
 {
 	this->vertices = vertices;
 	this->faces = faces;
+	this->rawFaces = rawFaces;
 	this->computeNormals();
 	printf("Vertices %zu \nTriangles %zu \nPoints %zu \n", vertices.size(), faces.size(), faces.size() * 3);
 }
@@ -17,7 +18,7 @@ void Actor::render()
 	glBegin(GL_TRIANGLES);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, glm::value_ptr(specularColor));
 	glMateriali(GL_FRONT, GL_SHININESS, 96);
-	glColor3ubv(color);
+	glColor3fv(glm::value_ptr(color));
 	for (auto&& face : faces)
 	{	
 		for (size_t i = 0; i < face.size(); i++)
@@ -80,9 +81,17 @@ void Actor::computeNormals()
 	// Average ans save the normals
 	normals.clear();
 	normals.resize(vertices.size());
+	rawVerticesWithNormals.reserve(vertices.size() * 6);
 	for (size_t i = 0; i < verticesNormals.size(); i++)
 	{
 		glm::vec3 sum = std::accumulate(verticesNormals[i].begin(), verticesNormals[i].end(), glm::vec3(0.0f));
-		normals[i] = glm::normalize(sum);
+		glm::vec3 normal = glm::normalize(sum);
+		normals[i] = normal;
+		rawVerticesWithNormals.push_back(vertices[i].x);
+		rawVerticesWithNormals.push_back(vertices[i].y);
+		rawVerticesWithNormals.push_back(vertices[i].z);
+		rawVerticesWithNormals.push_back(normal.x);
+		rawVerticesWithNormals.push_back(normal.y);
+		rawVerticesWithNormals.push_back(normal.z);
 	}
 }

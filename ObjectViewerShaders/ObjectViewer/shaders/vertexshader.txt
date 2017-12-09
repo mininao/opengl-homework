@@ -1,14 +1,52 @@
 #version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aNormal;
 
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
-layout (location = 0)  in vec3 vertPosition;
-layout (location = 1)  in vec3 vertColor;
+uniform vec4 cameraPos;
+uniform vec4 lightPos;
+uniform vec4 lightAmbientColor;
+uniform vec4 lightDiffuseColor;
+uniform vec4 lightSpecularColor;
+uniform vec4 globalAmbientColor;
+uniform bool lightEnabled;
 
-out vec3 myColor;
+out vec4 LightingColor;
+out vec4 SpecularColor;
+flat out vec4 FlatLightingColor;
+flat out vec4 FlatSpecularColor;
+
 void main()
-{	
-	gl_Position = projectionMatrix * modelViewMatrix * vec4(vertPosition, 1.0);
-	myColor = vec3(0.0, 1.1, 1.0);
+{
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(aPos, 1.0);
+    
+    // gouraud shading
+    // ------------------------
+    vec3 Position = vec3(modelViewMatrix * vec4(aPos, 1.0));
+    vec3 Normal = mat3(transpose(inverse(modelViewMatrix))) * aNormal;
+  	
+    // diffuse 
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(vec3(lightPos) - aPos);
+    float diff = max(dot(aNormal, lightDir), 0.0);
+    vec4 diffuse = diff * lightDiffuseColor;
+    
+    // specular
+    float specularStrength = 1.0;
+    vec3 viewDir = normalize(vec3(cameraPos) - Position);
+    vec3 reflectDir = reflect(-lightDir, aNormal);  
+    //float spec = pow(max(dot(viewDir, reflectDir), 0.0), 21);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 96);
+	if(lightEnabled) {
+		LightingColor = globalAmbientColor + lightAmbientColor + diffuse;
+		SpecularColor = specularStrength * spec * lightSpecularColor; 
+	}
+	else {
+		LightingColor = globalAmbientColor;
+		SpecularColor = vec4(0.0);
+	}
+	FlatLightingColor = LightingColor;
+	FlatSpecularColor = SpecularColor;
 }

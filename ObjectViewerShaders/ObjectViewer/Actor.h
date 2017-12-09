@@ -11,18 +11,19 @@ using namespace std;
 class Actor
 {
 public:
-	Actor(vector<glm::vec3> vertices, vector<vector<int>> faces);
+	Actor(vector<glm::vec3> vertices, vector<vector<int>> faces, vector<int> rawFaces);
 
 	void render();
 	void computeNormals();
-	GLubyte color[3] = { 0xFF, 0x7F, 0x46 };
+	glm::vec4 color = glm::vec4(1.0f, 0.5f, 0.3f, 1.0f);
 	glm::vec4 specularColor = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f);
 	glm::vec3 maxCoordinates;
 	glm::vec3 minCoordinates;
 	bool showBoundingBox = false;
 	GLenum renderingMode = GL_FILL;
-private:
 	vector<glm::vec3> vertices;
+	vector<GLfloat> rawVerticesWithNormals;
 	vector<glm::vec3> normals;
 	vector<vector<int>> faces;
+	vector<int> rawFaces;
 };

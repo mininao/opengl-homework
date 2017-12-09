@@ -22,7 +22,9 @@ namespace WavefrontParser
 		
 		string line;
 		vector<glm::vec3> vertices;
+		//vector<float> rawVertices;
 		vector<vector<int>> faces;
+		vector<int> rawFaces;
 		glm::vec3 maxCoordinates;
 		glm::vec3 minCoordinates;
 
@@ -44,11 +46,16 @@ namespace WavefrontParser
 					minCoordinates = { min(vertex.x, minCoordinates.x), min(vertex.y, minCoordinates.y), min(vertex.z, minCoordinates.z) };					
 				}
 				vertices.push_back(vertex);
+				//rawVertices.push_back(vertex.x);
+				//rawVertices.push_back(vertex.y);
+				//rawVertices.push_back(vertex.z);
 			}
 			else if (lineStart == "f ")
 			{
 				vector<int> face = parseFaceLine(line);
-				//faces.insert(faces.end(), face.begin(), face.end());
+				rawFaces.push_back(face[0] - 1);
+				rawFaces.push_back(face[1] - 1);
+				rawFaces.push_back(face[2] - 1);
 				faces.push_back(face);
 			}
 			else
@@ -59,7 +66,7 @@ namespace WavefrontParser
 		}
 		printf("end parseloop \n");
 
-		Actor actor = Actor(vertices, faces);
+		Actor actor = Actor(vertices, faces, rawFaces);
 		actor.maxCoordinates = maxCoordinates;
 		actor.minCoordinates = minCoordinates;
 		return actor;

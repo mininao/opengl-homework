@@ -22,7 +22,7 @@ public:
 	bool enabled = true;
 	bool enableDraw = true;
 	bool enableTestSpheres = true;
-	bool animateRotation = true;
+	bool animateRotation = false;
 private:
 	void drawTestSpheres();
 };

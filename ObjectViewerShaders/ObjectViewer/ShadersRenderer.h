@@ -29,5 +29,20 @@ private:
 	GLuint programId;
 	void setupSelf();
 	void initShaders();
+	GLuint VBO;
+	GLuint VAO;
+	GLuint EBO;
+	GLint projectionMatLocation;
+	GLint modeViewMatLocation;
+	GLint cameraPosLocation;
+	GLint lightPosLocation;
+	GLint lightAmbientColorLocation;
+	GLint lightDiffuseColorLocation;
+	GLint lightSpecularColorLocation;
+	GLint globalAmbientColorLocation;
+	GLint objectColorLocation;
+	GLint specularObjectColorLocation;
+	GLint lightEnabledLocation;
+	GLint flatShadingLocation;
 };
 

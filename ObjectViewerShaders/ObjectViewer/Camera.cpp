@@ -65,7 +65,7 @@ void Camera::applyViewTransforms()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glm::mat4 view = glm::lookAt(position, position + front, up);
-	glMultMatrixf(glm::value_ptr(view));
+	glMultMatrixf(glm::value_ptr(getViewMatrix()));
 }
 
 void Camera::applyProjectionTransforms()
@@ -75,7 +75,8 @@ void Camera::applyProjectionTransforms()
 	// Reset Matrix
 	glLoadIdentity();
 	// TODO Support aspect ratio modification by window resizing
-	gluPerspective(fov, 1.0f, nearDistance, farDistance);
+	//gluPerspective(fov, 1.0f, nearDistance, farDistance);
+	glMultMatrixf(glm::value_ptr(getProjectionMatrix()));
 	glMatrixMode(GL_MODELVIEW);
 }
 
