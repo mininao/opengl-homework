@@ -82,8 +82,34 @@ void Camera::applyProjectionTransforms()
 
 glm::mat4 Camera::getProjectionMatrix() {
 	return glm::perspective(fov, 1.0f, nearDistance, farDistance);
+	float tanHalfFovy = tan(fov / 2.0f);
+	glm::mat4 Result(0.0f);
+	Result[0][0] = 1.0f / (1.0f * tanHalfFovy);
+	Result[1][1] = 1.0f / (tanHalfFovy);
+	Result[2][3] = -1.0f;
+	Result[2][2] = -(farDistance + nearDistance) / (farDistance - nearDistance);
+	Result[3][2] = -(2.0f * farDistance * nearDistance) / (farDistance - nearDistance);
+	return Result;
 }
 
 glm::mat4 Camera::getViewMatrix() {
 	return glm::lookAt(position, position + front, up);
+	glm::vec3 f(normalize(front));
+	glm::vec3 s(normalize(cross(f, up)));
+	glm::vec3 u(cross(s, f));
+
+	glm::mat4 Result(1);
+	Result[0][0] = s.x;
+	Result[1][0] = s.y;
+	Result[2][0] = s.z;
+	Result[0][1] = u.x;
+	Result[1][1] = u.y;
+	Result[2][1] = u.z;
+	Result[0][2] = -f.x;
+	Result[1][2] = -f.y;
+	Result[2][2] = -f.z;
+	Result[3][0] = -dot(s, position);
+	Result[3][1] = -dot(u, position);
+	Result[3][2] = dot(f, position);
+	return Result;
 }

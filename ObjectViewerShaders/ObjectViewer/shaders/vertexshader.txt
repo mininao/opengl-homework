@@ -38,7 +38,7 @@ void main()
     vec3 viewDir = normalize(vec3(cameraPos) - Position);
     vec3 reflectDir = reflect(-lightDir, aNormal);  
     //float spec = pow(max(dot(viewDir, reflectDir), 0.0), 21);
-	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 96);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 21);
 	if(lightEnabled) {
 		LightingColor = globalAmbientColor + lightAmbientColor + diffuse;
 		SpecularColor = specularStrength * spec * lightSpecularColor; 
